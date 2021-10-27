@@ -1,7 +1,7 @@
 
-import Nombre from './Components/Nombre'
- import FechaNacimiento from './Components/FechaNacimiento';
- import DatosContacto from './Components/DatosContacto'
+import Nombre from './components/Nombre'
+import FechaNacimiento from './components/FechaNacimiento';
+import DatosContacto from './components/DatosContacto'
 import img from './assets/img/avatar3.png'
 import { MdAccessTime } from 'react-icons/md';
 import { FaNotesMedical } from 'react-icons/fa';
@@ -14,7 +14,9 @@ import { CREATE_USER } from "./graphql/Mutation";
 function App() {
 
 
-  const [createPersona] = useMutation(CREATE_USER);
+  const [createPersona, error ] = useMutation(CREATE_USER);
+
+
 
   const [user, setUser] = useState({
     nombre: "",
@@ -30,10 +32,10 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(user);
+    //console.log(user);
     if (validarFormulario()) {
       try {
-        const { data } = createPersona({
+         createPersona({
           variables: {
             nombre: user.nombre,
             segundoNombre: user.segundoNombre,
@@ -44,8 +46,7 @@ function App() {
             telefono: user.telefono,
           },
         });
-
-        console.log("data" + data);
+   
         toast.info("Guardado con Éxito...", {
           position: "top-right",
           autoClose: 2000,
@@ -55,8 +56,8 @@ function App() {
           draggable: true,
           progress: undefined,
         });
-      } catch (error) {
-        toast.error(error.message, {
+      } catch (error_) {
+        toast.error(error_.message, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -92,7 +93,7 @@ function App() {
         draggable: true,
         progress: undefined,
       });
-     // nombreFocus();
+      // nombreFocus();
       return false;
     }
     if (user.apellidoPaterno === "") {
@@ -183,6 +184,8 @@ function App() {
   };
 
   return (
+
+
     <div className="container">
       <ToastContainer></ToastContainer>
       <div className="row">
@@ -232,7 +235,7 @@ function App() {
                   <FechaNacimiento img={img} user={user} setUser={setUser} />
                 </div>
                 <div className="col-md-6 my-1">
-                  <DatosContacto img={img} user={user} setUser={setUser} handleSubmit={handleSubmit}/>
+                  <DatosContacto img={img} user={user} setUser={setUser} handleSubmit={handleSubmit} />
                 </div>
               </div>
             </div>
